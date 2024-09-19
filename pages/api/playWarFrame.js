@@ -54,13 +54,33 @@ export default async function handler(req, res) {
     // Check if one pile is empty to end the game
     const pileResponse = await axios.get(`${deckApiUrl}/${deckId}/pile/player/list/`);
     if (pileResponse.data.piles.player.remaining === 0) {
-      result = playerValue > computerValue ? 'Game Over: You Won!' : 'Game Over: You Lost!';
+      const finalResult = playerValue > computerValue ? 'Game Over: You Won!' : 'Game Over: You Lost!';
+      const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogEndGame?text=${encodeURIComponent(finalResult)}`;
+
+      // Game over response
+      return res.status(200).send(`
+        <!DOCTYPE html>
+        <html>
+          <head>
+            <meta property="fc:frame" content="vNext" />
+            <meta property="fc:frame:image" content="${ogImageUrl}" />
+            <meta property="fc:frame:button:1" content="Play Again" />
+            <meta property="fc:frame:post_url" content="${process.env.NEXT_PUBLIC_BASE_URL}/api/playWarFrame" />
+            <meta property="fc:frame:button:2" content="Share" />
+            <meta property="fc:frame:button:2:action" content="link" />
+            <meta property="fc:frame:button:2:target" content="${encodeURIComponent(`https://warpcast.com/~/compose?text=Play%20the%20classic%20card%20game%20War!%20Frame%20by%20@aaronv.eth`)}" />
+          </head>
+          <body>
+            <p>${finalResult}</p>
+          </body>
+        </html>
+      `);
     }
 
     // Dynamic image URL for Vercel OG
     const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/warOgImage?text=${encodeURIComponent(result)}&playerCard=${playerCard.image}&computerCard=${computerCard.image}`;
 
-    // Return response for the frame
+    // Return response for the next turn
     res.setHeader('Content-Type', 'text/html');
     return res.status(200).send(`
       <!DOCTYPE html>
