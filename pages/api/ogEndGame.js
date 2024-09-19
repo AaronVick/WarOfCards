@@ -8,6 +8,8 @@ export default function handler(req) {
   const { searchParams } = new URL(req.url);
   const text = searchParams.get('text');
   const round = searchParams.get('round') || 'Final';
+  const playerWins = searchParams.get('playerWins') || '0';
+  const opponentWins = searchParams.get('opponentWins') || '0';
 
   console.log('OG image generation started for End Game with text:', text);
 
@@ -33,7 +35,10 @@ export default function handler(req) {
         <div style={{ fontSize: 72, fontWeight: 'bold', marginBottom: '40px', textAlign: 'center' }}>
           {text}
         </div>
-        <div style={{ fontSize: 36, textAlign: 'center' }}>Game Over</div>
+        <div style={{ fontSize: 36, textAlign: 'center', marginBottom: '20px' }}>Game Over</div>
+        <div style={{ fontSize: 30, textAlign: 'center' }}>
+          Final Score: You {playerWins} - {opponentWins} Opponent
+        </div>
       </div>
     ),
     {

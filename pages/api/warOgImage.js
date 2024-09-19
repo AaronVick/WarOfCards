@@ -8,8 +8,10 @@ export default function handler(req) {
   const { searchParams } = new URL(req.url);
   const text = searchParams.get('text');
   const playerCard = searchParams.get('playerCard');
-  const computerCard = searchParams.get('computerCard');
+  const opponentCard = searchParams.get('opponentCard');
   const round = searchParams.get('round') || '1';
+  const playerWins = searchParams.get('playerWins') || '0';
+  const opponentWins = searchParams.get('opponentWins') || '0';
 
   return new ImageResponse(
     (
@@ -32,10 +34,12 @@ export default function handler(req) {
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <img src={playerCard} alt="Player's card" width="200" height="280" />
             <p style={{ fontSize: 32, marginTop: 20 }}>Your Card</p>
+            <p style={{ fontSize: 24, marginTop: 10 }}>Wins: {playerWins}</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src={computerCard} alt="Opponent's card" width="200" height="280" />
-            <p style={{ fontSize: 32, marginTop: 20 }}>Computer's Card</p>
+            <img src={opponentCard} alt="Opponent's card" width="200" height="280" />
+            <p style={{ fontSize: 32, marginTop: 20 }}>Opponent's Card</p>
+            <p style={{ fontSize: 24, marginTop: 10 }}>Wins: {opponentWins}</p>
           </div>
         </div>
       </div>
