@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+// Updated War card game logic
 const deckApiUrl = 'https://deckofcardsapi.com/api/deck';
 
 async function drawCards(deckId, count = 1) {
