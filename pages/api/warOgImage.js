@@ -32,7 +32,7 @@ export default function handler(req) {
             <p style={{ fontSize: 32, marginTop: 20 }}>Your Card</p>
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-            <img src={computerCard} alt="Computer's card" width="200" height="280" />
+            <img src={computerCard} alt="Opponent's card" width="200" height="280" />
             <p style={{ fontSize: 32, marginTop: 20 }}>Computer's Card</p>
           </div>
         </div>
