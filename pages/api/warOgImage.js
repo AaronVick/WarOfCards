@@ -10,29 +10,31 @@ export default function handler(req) {
   const playerCard = searchParams.get('playerCard');
   const computerCard = searchParams.get('computerCard');
 
-  console.log('OG image generation started for War Round with text:', text);
-
   return new ImageResponse(
     (
       <div
         style={{
-          backgroundColor: 'lightblue',
+          background: 'linear-gradient(to bottom, #4b6cb7, #182848)',
           width: '100%',
           height: '100%',
           display: 'flex',
           flexDirection: 'column',
-          justifyContent: 'center',
           alignItems: 'center',
+          justifyContent: 'center',
           fontFamily: 'sans-serif',
-          padding: '20px',
+          color: 'white',
         }}
       >
-        <div style={{ fontSize: 60, fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>
-          {text}
-        </div>
+        <h1 style={{ fontSize: 60, marginBottom: 40 }}>{text}</h1>
         <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
-          <img src={playerCard} alt="Player's card" style={{ width: '200px', height: 'auto' }} />
-          <img src={computerCard} alt="Computer's card" style={{ width: '200px', height: 'auto' }} />
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src={playerCard} alt="Player's card" width="200" height="280" />
+            <p style={{ fontSize: 32, marginTop: 20 }}>Your Card</p>
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+            <img src={computerCard} alt="Computer's card" width="200" height="280" />
+            <p style={{ fontSize: 32, marginTop: 20 }}>Computer's Card</p>
+          </div>
         </div>
       </div>
     ),
