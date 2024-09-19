@@ -84,6 +84,29 @@ export default async function handler(req, res) {
         }
         
         const endGameImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogEndGame?text=${encodeURIComponent(finalResult)}&round=${roundNumber}&playerWins=${playerWins}&opponentWins=${opponentWins}`;
+        
+        console.log('Generating end game image with URL:', endGameImageUrl);
+
+        try {
+          // Test if the end game image can be generated
+          await axios.get(endGameImageUrl);
+        } catch (error) {
+          console.error('Error generating end game image:', error);
+          // If there's an error, use a fallback image or the last game state image
+          const fallbackImageUrl = ogImageUrl;
+          return res.status(200).send(`
+            <!DOCTYPE html>
+            <html>
+              <head>
+                <meta property="fc:frame" content="vNext" />
+                <meta property="fc:frame:image" content="${fallbackImageUrl}" />
+                <meta property="fc:frame:button:1" content="Play Again" />
+                <meta property="fc:frame:post_url" content="${process.env.NEXT_PUBLIC_BASE_URL}/api/playWarFrame" />
+                <meta property="fc:frame:state" content="${encodeURIComponent(JSON.stringify({ gameState: 'start' }))}" />
+              </head>
+            </html>
+          `);
+        }
 
         return res.status(200).send(`
           <!DOCTYPE html>
