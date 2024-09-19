@@ -29,14 +29,14 @@ export default function handler(req) {
             color: 'white',
           }}
         >
-          <div style={{ fontSize: '60px', fontWeight: 'bold', marginBottom: '20px', textAlign: 'center' }}>
+          <div style={{ fontSize: '60px', fontWeight: 'bold', marginBottom: '20px', textAlign: 'center', display: 'flex' }}>
             Round {round}
           </div>
-          <div style={{ fontSize: '72px', fontWeight: 'bold', marginBottom: '40px', textAlign: 'center' }}>
+          <div style={{ fontSize: '72px', fontWeight: 'bold', marginBottom: '40px', textAlign: 'center', display: 'flex' }}>
             {text}
           </div>
-          <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '20px' }}>Game Over</div>
-          <div style={{ fontSize: '30px', textAlign: 'center' }}>
+          <div style={{ fontSize: '36px', textAlign: 'center', marginBottom: '20px', display: 'flex' }}>Game Over</div>
+          <div style={{ fontSize: '30px', textAlign: 'center', display: 'flex' }}>
             Final Score: You {playerWins} - {opponentWins} Opponent
           </div>
         </div>
