@@ -9,11 +9,11 @@ export default function Home() {
       <Head>
         <title>Card War Game</title>
         <meta property="og:title" content="Card War Game" />
-        <meta property="og:image" content="/cardwar.png" /> {/* Updated to use public folder */}
+        <meta property="og:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}cardwar.png`} /> {/* Removed leading slash */}
         <meta property="fc:frame" content="vNext" />
-        <meta property="fc:frame:image" content="/cardwar.png" /> {/* Updated to use public folder */}
+        <meta property="fc:frame:image" content={`${process.env.NEXT_PUBLIC_BASE_URL}cardwar.png`} /> {/* Removed leading slash */}
         <meta property="fc:frame:button:1" content="Play War" />
-        <meta property="fc:frame:post_url" content={`${process.env.NEXT_PUBLIC_BASE_URL}/api/playWarFrame`} />
+        <meta property="fc:frame:post_url" content={`${process.env.NEXT_PUBLIC_BASE_URL}api/playWarFrame`} /> {/* Removed leading slash */}
         <meta property="fc:frame:button:2" content="Share" />
         <meta property="fc:frame:button:2:action" content="link" />
         <meta property="fc:frame:button:2:target" content={shareLink} />
