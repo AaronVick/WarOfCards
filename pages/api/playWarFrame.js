@@ -67,14 +67,14 @@ export default async function handler(req, res) {
         result = "It's a tie! War!";
       }
 
-      const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/warOgImage?text=${encodeURIComponent(result)}&playerCard=${encodeURIComponent(playerCard.image)}&computerCard=${encodeURIComponent(computerCard.image)}`;
+      const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/warOgImage?text=${encodeURIComponent(result)}&playerCard=${encodeURIComponent(playerCard.image)}&computerCard=${encodeURIComponent(computerCard.image)}&round=${roundNumber}`;
 
       const remainingCards = await axios.get(`${deckApiUrl}/${newDeckId}`);
       console.log('Remaining cards:', remainingCards.data.remaining);
       
       if (remainingCards.data.remaining <= 2) {
         const finalResult = 'Game Over!';
-        const endGameImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogEndGame?text=${encodeURIComponent(finalResult)}`;
+        const endGameImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogEndGame?text=${encodeURIComponent(finalResult)}&round=${roundNumber}`;
 
         return res.status(200).send(`
           <!DOCTYPE html>

@@ -9,6 +9,7 @@ export default function handler(req) {
   const text = searchParams.get('text');
   const playerCard = searchParams.get('playerCard');
   const computerCard = searchParams.get('computerCard');
+  const round = searchParams.get('round') || '1';
 
   return new ImageResponse(
     (
@@ -25,7 +26,8 @@ export default function handler(req) {
           color: 'white',
         }}
       >
-        <h1 style={{ fontSize: 60, marginBottom: 40 }}>{text}</h1>
+        <h1 style={{ fontSize: 60, marginBottom: 20 }}>Round {round}</h1>
+        <h2 style={{ fontSize: 48, marginBottom: 40 }}>{text}</h2>
         <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%' }}>
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <img src={playerCard} alt="Player's card" width="200" height="280" />
