@@ -71,11 +71,18 @@ export default async function handler(req, res) {
 
       const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/warOgImage?text=${encodeURIComponent(result)}&playerCard=${encodeURIComponent(playerCard.image)}&opponentCard=${encodeURIComponent(opponentCard.image)}&round=${roundNumber}&playerWins=${playerWins}&opponentWins=${opponentWins}`;
 
-      const remainingCards = await axios.get(`${deckApiUrl}/${newDeckId}`);
-      console.log('Remaining cards:', remainingCards.data.remaining);
+      const isGameOver = roundNumber >= 26 || (playerWins + opponentWins) >= 26;
       
-      if (remainingCards.data.remaining <= 2) {
-        const finalResult = playerWins > opponentWins ? 'You won the game!' : (playerWins < opponentWins ? 'You lost the game!' : 'The game ended in a tie!');
+      if (isGameOver) {
+        let finalResult;
+        if (playerWins > opponentWins) {
+          finalResult = 'You won the game!';
+        } else if (playerWins < opponentWins) {
+          finalResult = 'You lost the game!';
+        } else {
+          finalResult = 'The game ended in a tie!';
+        }
+        
         const endGameImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogEndGame?text=${encodeURIComponent(finalResult)}&round=${roundNumber}&playerWins=${playerWins}&opponentWins=${opponentWins}`;
 
         return res.status(200).send(`
