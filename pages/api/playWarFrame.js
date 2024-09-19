@@ -14,8 +14,11 @@ async function createNewDeck() {
 
 export default async function handler(req, res) {
   try {
-    const { deckId, gameState, roundNumber = 1 } = JSON.parse(req.body?.untrustedData?.state || '{}') || {};
-    
+    // Correctly parse the incoming state data
+    const bodyJson = JSON.parse(req.body);
+    const stateJson = JSON.parse(decodeURIComponent(bodyJson.untrustedData.state));
+    const { deckId, gameState, roundNumber = 1 } = stateJson;
+
     let newDeckId = deckId;
 
     if (gameState === 'start' || !newDeckId) {
@@ -89,7 +92,7 @@ export default async function handler(req, res) {
 
   } catch (error) {
     console.error('Error in playWarFrame:', error.message);
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error', details: error.message });
   }
 }
 
