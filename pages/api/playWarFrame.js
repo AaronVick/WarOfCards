@@ -14,15 +14,28 @@ async function createNewDeck() {
 
 export default async function handler(req, res) {
   try {
-    // Correctly parse the incoming state data
-    const bodyJson = JSON.parse(req.body);
-    const stateJson = JSON.parse(decodeURIComponent(bodyJson.untrustedData.state));
-    const { deckId, gameState, roundNumber = 1 } = stateJson;
+    console.log('Received request body:', JSON.stringify(req.body));
+
+    let stateData;
+    if (typeof req.body === 'string') {
+      stateData = JSON.parse(req.body);
+    } else if (typeof req.body === 'object') {
+      stateData = req.body;
+    } else {
+      throw new Error('Unexpected request body type');
+    }
+
+    console.log('Parsed state data:', JSON.stringify(stateData));
+
+    let { deckId, gameState, roundNumber = 1 } = stateData.untrustedData?.state ? JSON.parse(decodeURIComponent(stateData.untrustedData.state)) : { gameState: 'start' };
+
+    console.log('Extracted game state:', { deckId, gameState, roundNumber });
 
     let newDeckId = deckId;
 
     if (gameState === 'start' || !newDeckId) {
       newDeckId = await createNewDeck();
+      console.log('Created new deck:', newDeckId);
       const drawImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/ogDraw?round=1`;
       
       return res.status(200).send(`
@@ -41,6 +54,7 @@ export default async function handler(req, res) {
 
     if (gameState === 'draw') {
       const [playerCard, computerCard] = await drawCards(newDeckId, 2);
+      console.log('Drawn cards:', { playerCard, computerCard });
       const playerValue = cardValue(playerCard.value);
       const computerValue = cardValue(computerCard.value);
 
@@ -56,6 +70,7 @@ export default async function handler(req, res) {
       const ogImageUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/warOgImage?text=${encodeURIComponent(result)}&playerCard=${encodeURIComponent(playerCard.image)}&computerCard=${encodeURIComponent(computerCard.image)}`;
 
       const remainingCards = await axios.get(`${deckApiUrl}/${newDeckId}`);
+      console.log('Remaining cards:', remainingCards.data.remaining);
       
       if (remainingCards.data.remaining <= 2) {
         const finalResult = 'Game Over!';
@@ -91,8 +106,8 @@ export default async function handler(req, res) {
     }
 
   } catch (error) {
-    console.error('Error in playWarFrame:', error.message);
-    res.status(500).json({ error: 'Internal Server Error', details: error.message });
+    console.error('Error in playWarFrame:', error);
+    res.status(500).json({ error: 'Internal Server Error', details: error.message, stack: error.stack });
   }
 }
 
